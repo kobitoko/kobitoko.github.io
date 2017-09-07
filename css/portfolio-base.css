@@ -9,20 +9,20 @@ body {
     background-color: #222;
 }
 
-@media (min-width:23rem) {    
+@media (min-width:375px) {    
     #banner {
-        padding-top: 1.5rem;
-        padding-left: 2rem;
+        padding-top: 1.5em;
+        padding-left: 2em;
     }
     #navbar {
         text-align: right;
     }
     .button-nav {
-        border-top-left-radius: .2rem;
-        border-top-right-radius: .2rem;
+        border-top-left-radius: .2em;
+        border-top-right-radius: .2em;
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
-        font-size: 1rem;
+        font-size: 1em;
         font-weight: bold;
         color: white;
         background-color: #222;
@@ -30,7 +30,7 @@ body {
     }
 }
 
-@media (max-width:23rem) {
+@media (max-width:375px) {
     #banner {
         padding-top: 1rem;
         padding-left: 1rem;
@@ -40,9 +40,13 @@ body {
         white-space: nowrap;
     }
     .button-nav {
+        border-top-left-radius: .2em;
+        border-top-right-radius: .2em;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
         font-size: 0.75rem;
         font-weight: bold;
-        height: 2rem;
+        height: 2em;
         color: white;
         background-color: #222;
         border: none;
@@ -76,6 +80,10 @@ h1 {
     color: white;
 }
 
+h2, h3 {
+    display: inline;
+}
+
 #spacer {
     margin: .5rem auto;
     padding: .07rem;
@@ -93,11 +101,6 @@ h1 {
     text-align: center;
 }
 
-article {
-    padding-left: 1em;
-    padding-right: 1em;
-}
-
 .grid {
     padding-left: 1em;
     padding-right: 1em;
@@ -106,15 +109,28 @@ article {
     flex-wrap: wrap;
     justify-content: center;
     flex: 0 0 auto;
-    background-color: gray;
+    
 }
 
 .grid-item {
-    width: 25rem;
-    margin: .5rem;
-    background-color: dimgray;
+    width: 300px;
+    margin: .5em;
+    
+    box-shadow: 0 0 .2rem  lightgray;
+    border-radius: .2rem;
+    overflow: hidden;
 }
 
 .grid-item:hover {
     background-color: lightgray;
+}
+
+article {
+    padding: .5em;
+    padding-top: 0;
+}
+
+img {
+    max-width: 400px;
+    width: 100%;
 }
