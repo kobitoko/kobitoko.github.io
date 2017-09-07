@@ -1,0 +1,11 @@
+
+http://strapdownjs.com/
+
+use portfolio entries in markdown. and site dynamically loads them, into the boxes and the full page when selected.
+And the inside content of each portfolio item, loads up a box that replaces content and is a closable window too (or pressing esc).
+
+for tabulators:
+https://www.w3schools.com/w3css/w3css_tabulators.asp
+
+problem with tabulator, it gotta load EVERYTHING, potential waste of loading other pages.
+Keep the content divs empty kinda and load actual content from external html using js/jquery?
