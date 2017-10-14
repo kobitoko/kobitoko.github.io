@@ -22,4 +22,59 @@ function openTab(pageName) {
 function init() {
     // if no anchor # after page name, then open home tab.
     openTab("home");
+    getArticles();
 }
+
+function getArticles() {
+    $.getJSON("articles.json", {}, crawlArticles);
+}
+
+var articleTags = {}, 
+    articles = {};
+
+function crawlArticles(data) {
+    $.each(data, function(key, val) {
+        articleTags[key] = val;
+    });
+    downloadArticles();
+}
+
+function downloadArticles() {
+    var promises = [];
+    $.each(articleTags, function(key) {
+        promises.push(
+        $.ajax({
+            mimeType: 'text/plain; charset=x-user-defined',
+            url: "./articles/"+key+".md",
+            type: "GET",
+            dataType: "text",
+            cache: true,
+            success: function(data) {
+                articles[key] = String(data);
+                Promise.resolve();
+            }
+        }));
+    });
+    // Use futures, after all the above ajax finished then make grid.
+    Promise.all(promises).then(createGrid);
+}
+
+function createGrid() {
+    var converter = new showdown.Converter();
+    $.each(articleTags, function(key, val) {
+        var title = key.replace("_"," "),
+            // Display the image and first two paragraphs.(double newline)
+            shortBlurb = articles[key].split('\r\n\r\n'),
+            content = String(shortBlurb[0]+"<br>"+shortBlurb[1]+"<br>"+shortBlurb[2]);
+        $(".grid")[0].innerHTML += "<div class='grid-item'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
+    });
+}
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,5 @@
 
-http://strapdownjs.com/
+https://github.com/showdownjs/showdown
 
 use portfolio entries in markdown. and site dynamically loads them, into the boxes and the full page when selected.
 And the inside content of each portfolio item, loads up a box that replaces content and is a closable window too (or pressing esc).
