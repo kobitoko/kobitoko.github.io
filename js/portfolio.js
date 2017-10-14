@@ -45,7 +45,7 @@ function downloadArticles() {
         promises.push(
         $.ajax({
             mimeType: 'text/plain; charset=x-user-defined',
-            url: "https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".md",
+            url: "https://cors-anywhere.herokuapp.com/https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".md",
             type: "GET",
             dataType: "text",
             cache: false,
