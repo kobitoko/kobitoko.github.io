@@ -26,7 +26,7 @@ function init() {
 }
 
 function getArticles() {
-    $.getJSON("articles.json", {}, crawlArticles);
+    $.getJSON("https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles.json", {}, crawlArticles);
 }
 
 var articleTags = {}, 
@@ -45,7 +45,7 @@ function downloadArticles() {
         promises.push(
         $.ajax({
             mimeType: 'text/plain; charset=x-user-defined',
-            url: "./articles/"+key+".md",
+            url: "https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".md",
             type: "GET",
             dataType: "text",
             cache: false,
@@ -66,7 +66,7 @@ function createGrid() {
             // Display the image and the first paragraph.(double newline)
             shortBlurb = articles[key].split('\r\n\r\n'),
             content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
-        $(".grid")[0].innerHTML += "<div class='grid-item'><img src='./articles/"+key+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
+        $(".grid")[0].innerHTML += "<div class='grid-item'><img src='https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
     });
 }
 
