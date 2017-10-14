@@ -26,7 +26,20 @@ function init() {
 }
 
 function getArticles() {
-    $.getJSON("https://cors-anywhere.herokuapp.com/https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles.json", {}, crawlArticles);
+    //$.getJSON("https://cors-anywhere.herokuapp.com/https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles.json", {}, crawlArticles);
+    $.each(articleTags, function(key) {
+        promises.push(
+        $.ajax({
+            url: "https://cors-anywhere.herokuapp.com/https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles.json",
+            type: "GET",
+            dataType: "json",
+            cache: false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("X-Requested-With","https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles.json");
+            }
+            success: crawlArticles;
+        }));
+    });
 }
 
 var articleTags = {}, 
@@ -49,6 +62,9 @@ function downloadArticles() {
             type: "GET",
             dataType: "text",
             cache: false,
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader("X-Requested-With","https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".md");
+            }
             success: function(data) {
                 articles[key] = String(data);
                 Promise.resolve();
