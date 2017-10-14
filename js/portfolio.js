@@ -30,11 +30,13 @@ function getArticles() {
 }
 
 var articleTags = {}, 
-    articles = {};
+    articles = {},
+    articleSort = [];
 
 function crawlArticles(data) {
     $.each(data, function(key, val) {
         articleTags[key] = val;
+        articleSort.push(key);
     });
     downloadArticles();
 }
@@ -59,14 +61,21 @@ function downloadArticles() {
     Promise.all(promises).then(createGrid);
 }
 
+function sortByDate () {
+    articleSort.sort(function(a, b) {
+       return new Date(articleTags[a][0]) + new Date(articleTags[b][0]);
+    });
+}
+
 function createGrid() {
+    sortByDate();
     var converter = new showdown.Converter();
-    $.each(articleTags, function(key, val) {
-        var title = key.replace("_"," "),
+    $.each(articleSort, function(index, value) {
+        var title = String(value).replace("_"," "),
             // Display the image and the first paragraph.(double newline)
-            shortBlurb = articles[key].split('\n\n'),
+            shortBlurb = articles[value].split('\n\n'),
 			content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
-        $(".grid")[0].innerHTML += "<div class='grid-item'><img src='./articles/"+key+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
+        $(".grid")[0].innerHTML += "<div class='grid-item'><img src='./articles/"+value+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
     });
 }
 
