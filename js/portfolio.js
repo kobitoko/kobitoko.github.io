@@ -43,13 +43,15 @@ function downloadArticles() {
     var promises = [];
     $.each(articleTags, function(key) {
         promises.push(
+		console.log("articleAjax "+key);
         $.ajax({
             mimeType: 'text/plain; charset=x-user-defined',
-            url: "https://cors-anywhere.herokuapp.com/https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".md",
+            url: "https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".md",
             type: "GET",
             dataType: "text",
             cache: false,
             success: function(data) {
+				console.log("ayy "+data);
                 articles[key] = String(data);
                 Promise.resolve();
             }
