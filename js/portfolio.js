@@ -26,7 +26,7 @@ function init() {
 }
 
 function getArticles() {
-    $.getJSON("https://cors-anywhere.herokuapp.com/https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles.json", {}, crawlArticles);
+    $.getJSON("https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles.json", {}, crawlArticles);
 }
 
 var articleTags = {}, 
