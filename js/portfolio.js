@@ -48,7 +48,7 @@ function downloadArticles() {
             url: "./articles/"+key+".md",
             type: "GET",
             dataType: "text",
-            cache: true,
+            cache: false,
             success: function(data) {
                 articles[key] = String(data);
                 Promise.resolve();
@@ -63,18 +63,12 @@ function createGrid() {
     var converter = new showdown.Converter();
     $.each(articleTags, function(key, val) {
         var title = key.replace("_"," "),
-            // Display the image and first two paragraphs.(double newline)
+            // Display the image and the first paragraph.(double newline)
             shortBlurb = articles[key].split('\r\n\r\n'),
-            content = String(shortBlurb[0]+"<br>"+shortBlurb[1]+"<br>"+shortBlurb[2]);
-        $(".grid")[0].innerHTML += "<div class='grid-item'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
+            content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
+        $(".grid")[0].innerHTML += "<div class='grid-item'><img src='./articles/"+key+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
     });
 }
-
-
-
-
-
-
 
 
 
