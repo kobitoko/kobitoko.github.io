@@ -45,7 +45,7 @@ function downloadArticles() {
         promises.push(
         $.ajax({
             mimeType: 'text/plain; charset=x-user-defined',
-            url: "https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".md",
+            url: "./articles/"+key+".md",
             type: "GET",
             dataType: "text",
             cache: false,
@@ -65,8 +65,8 @@ function createGrid() {
         var title = key.replace("_"," "),
             // Display the image and the first paragraph.(double newline)
             shortBlurb = articles[key].split('\n\n'),
-            content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
-        $(".grid")[0].innerHTML += "<div class='grid-item'><img src='https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
+			content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
+        $(".grid")[0].innerHTML += "<div class='grid-item'><img src='./articles/"+key+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
     });
 }
 
