@@ -36,8 +36,8 @@ function getArticles() {
             cache: false,
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("X-Requested-With","https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles.json");
-            }
-            success: crawlArticles;
+            },
+            success: crawlArticles
         }));
     });
 }
@@ -64,7 +64,7 @@ function downloadArticles() {
             cache: false,
             beforeSend: function(xhr) {
                 xhr.setRequestHeader("X-Requested-With","https://raw.githubusercontent.com/kobitoko/kobitoko.github.io/master/articles/"+key+".md");
-            }
+            },
             success: function(data) {
                 articles[key] = String(data);
                 Promise.resolve();
