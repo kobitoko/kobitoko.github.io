@@ -67,17 +67,30 @@ function sortByDate () {
     });
 }
 
+var $grid = null;
+
 function createGrid() {
     sortByDate();
     var converter = new showdown.Converter();
     $.each(articleSort, function(index, value) {
         var title = String(value).replace("_"," "),
-            // Display the image and the first paragraph.(double newline)
-            shortBlurb = articles[value].split('\n\n'),
-			content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
-        $(".grid")[0].innerHTML += "<div class='grid-item'><img src='./articles/"+value+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
+        // Display the image and the first paragraph.(double newline)
+        shortBlurb = articles[value].split('\n\n'),
+        content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
+        var tags = articleTags[value].join(" ");
+        $(".grid")[0].innerHTML += "<div class='grid-item "+String(tags)+"'><img src='./articles/"+value+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
+        // assign grid to Isotope after it loaded all the items.
+    });
+    $grid = $('.grid').isotope({
+            itemSelector: '.grid-item',
+            layoutMode: 'fitRows'
     });
 }
 
-
+    $("#searcher").on("input", function () {
+        // TEST search:
+        var searchQuery = { filter:String(encodeURI($("#searcher").val()))};
+        console.log("changed to: "+JSON.stringify(searchQuery));
+        $grid.isotope(searchQuery);
+    });
 
