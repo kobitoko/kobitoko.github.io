@@ -26,22 +26,34 @@ function init() {
 }
 
 function getArticles() {
-    $.getJSON("articles.json", {}, crawlArticles);
+    $.getJSON("articles.json", {}, storeArticles);
 }
 
-var articleTags = {}, 
+// Title key and date+tags as an array of tags
+var articleTags = {},
+    // The actual contents of articles, with title as key
     articles = {},
-    articleSort = [];
+    // Array of articles to be sorted by their date tag
+    articleSort = [],
+    // Array of unique tags shared by all articles
+    uniqueTags = [];
 
-function crawlArticles(data) {
+function storeArticles(data) {
+    // Store article title and it's tags
     $.each(data, function(key, val) {
         articleTags[key] = val;
         articleSort.push(key);
+        // Store unique tags
+        $.each(val, function(index, tag) {
+            if(uniqueTags.indexOf(tag) === -1) {
+                uniqueTags.push(tag);
+            }
+        });
     });
-    downloadArticles();
+    downloadArticleBodies();
 }
 
-function downloadArticles() {
+function downloadArticleBodies() {
     var promises = [];
     $.each(articleTags, function(key) {
         promises.push(
@@ -61,7 +73,7 @@ function downloadArticles() {
     Promise.all(promises).then(createGrid);
 }
 
-function sortByDate () {
+function sortArticlesByLatestDate () {
     articleSort.sort(function(a, b) {
        return new Date(articleTags[a][0]) + new Date(articleTags[b][0]);
     });
@@ -70,17 +82,26 @@ function sortByDate () {
 var $grid = null;
 
 function createGrid() {
-    sortByDate();
+    sortArticlesByLatestDate();
+    // Add a grid item with article's image and first 2 paragraphs. Markdown formatted.
     var converter = new showdown.Converter();
     $.each(articleSort, function(index, value) {
         var title = String(value).replace("_"," "),
         // Display the image and the first paragraph.(double newline)
         shortBlurb = articles[value].split('\n\n'),
         content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
+        // Tags for Isotope
         var tags = articleTags[value].join(" ");
         $(".grid")[0].innerHTML += "<div class='grid-item "+String(tags)+"'><img src='./articles/"+value+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
-        // assign grid to Isotope after it loaded all the items.
     });
+    // Add tag buttons for Isotope
+    $.each(uniqueTags, function(index, value) {
+        //Create buttons for tags.
+        // Use alternative to isotope?
+        // http://yiotis.net/filterizr/
+        // or with scaling disabled: https://github.com/razorjack/quicksand/
+    });
+    // Assign grid to Isotope after it put all the items in the html
     $grid = $('.grid').isotope({
             itemSelector: '.grid-item',
             layoutMode: 'fitRows'
