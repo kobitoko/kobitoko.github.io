@@ -92,7 +92,6 @@ function createGrid() {
     });
     $.each(uniqueTags, function(index, value) {
         //Create buttons for tags.
-
     });
 }
 
@@ -105,11 +104,14 @@ $("#searcher").on("input", function () {
         });
         return;
     }
+    var fadeSpeedMs = 200;
     $.each(articleTags, function(key, value) {
-        if (value.indexOf(searchQuery) >= 0)
-            $("#"+key).fadeIn("slow");
-        else if(value.indexOf(searchQuery) === -1)
-            $("#"+key).fadeOut("slow");
+        if (value.indexOf(searchQuery) >= 0) {
+            $("#"+key).fadeIn(fadeSpeedMs);
+        }
+        else if(value.indexOf(searchQuery) === -1) {
+            $("#"+key).fadeOut(fadeSpeedMs);
+        }
     });
 });
 
