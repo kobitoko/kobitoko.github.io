@@ -79,8 +79,6 @@ function sortArticlesByLatestDate () {
     });
 }
 
-var $grid = null;
-
 function createGrid() {
     sortArticlesByLatestDate();
     // Add a grid item with article's image and first 2 paragraphs. Markdown formatted.
@@ -90,28 +88,28 @@ function createGrid() {
         // Display the image and the first paragraph.(double newline)
         shortBlurb = articles[value].split('\n\n'),
         content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
-        // Tags for Isotope
-        var tags = articleTags[value].join(" ");
-        $(".grid")[0].innerHTML += "<div class='grid-item "+String(tags)+"'><img src='./articles/"+value+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
+        $(".grid")[0].innerHTML += "<div id='"+value+"' class='grid-item'><img src='./articles/"+value+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
     });
-    // Add tag buttons for Isotope
     $.each(uniqueTags, function(index, value) {
         //Create buttons for tags.
-        // Use alternative to isotope?
-        // http://yiotis.net/filterizr/
-        // or with scaling disabled: https://github.com/razorjack/quicksand/
-    });
-    // Assign grid to Isotope after it put all the items in the html
-    $grid = $('.grid').isotope({
-            itemSelector: '.grid-item',
-            layoutMode: 'fitRows'
+
     });
 }
 
-    $("#searcher").on("input", function () {
-        // TEST search:
-        var searchQuery = { filter:String(encodeURI($("#searcher").val()))};
-        console.log("changed to: "+JSON.stringify(searchQuery));
-        $grid.isotope(searchQuery);
+$("#searcher").on("input", function () {
+    // TEST search:
+    var searchQuery = String(encodeURI($("#searcher").val()));
+    if(searchQuery.trim() === "") {
+        $.each(articleSort, function(index, value) {
+           $("#"+value).fadeIn("slow"); 
+        });
+        return;
+    }
+    $.each(articleTags, function(key, value) {
+        if (value.indexOf(searchQuery) >= 0)
+            $("#"+key).fadeIn("slow");
+        else if(value.indexOf(searchQuery) === -1)
+            $("#"+key).fadeOut("slow");
     });
+});
 

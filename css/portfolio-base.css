@@ -102,8 +102,6 @@ h2, h3 {
 }
 
 .grid {
-    padding-left: 1em;
-    padding-right: 1em;
     display: flex;
     flex-flow: row;
     flex-wrap: wrap;
