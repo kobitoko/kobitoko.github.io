@@ -95,7 +95,6 @@ function createGrid() {
         $(".tags")[0].innerHTML += "<li><button class='button-tag' id='"+value+"-tag' onclick='tagButton(this.id)'>"+value+"</button></li>";
         
     });
-    console.log( $(".tags")[0].innerHTML);
 }
 
 function tagButton(keyword) {
