@@ -112,12 +112,28 @@ h2, h3 {
 .tags-container {
     margin-left: 1em;
     margin-right: 1em;
+    user-select: none;
+}
+
+.button-tag {
+    margin-left: 0.2em;
+    margin-right: 0.2em;
+    margin-bottom: 0.2em;
+    background-color: white;
+    border-style: solid;
+    border-color: lightgray;
+    border-width:medium;
+    font-weight:bold;
+}
+
+.button-tag:hover {
+    background-color: #222;
+    color: white;
 }
 
 .grid-item {
     width: 300px;
     margin: .5em;
-    
     box-shadow: 0 0 .2rem  lightgray;
     border-radius: .2rem;
     overflow: hidden;
