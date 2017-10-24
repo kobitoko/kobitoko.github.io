@@ -45,7 +45,7 @@ function storeArticles(data) {
         articleSort.push(key);
         // Store unique tags
         $.each(val, function(index, tag) {
-            if(uniqueTags.indexOf(tag) === -1) {
+            if(uniqueTags.indexOf(tag) === -1 && index > 0) {
                 uniqueTags.push(tag);
             }
         });
@@ -92,26 +92,29 @@ function createGrid() {
     });
     $.each(uniqueTags, function(index, value) {
         //Create buttons for tags.
+        $(".tags")[0].innerHTML += "<li><button class='button-tag' id='"+value+"-tag' onclick='tagButton(this.id)'>"+value+"</button></li>";
+        
     });
+    console.log( $(".tags")[0].innerHTML);
 }
 
-$("#searcher").on("input", function () {
-    // TEST search:
-    var searchQuery = String(encodeURI($("#searcher").val()));
-    if(searchQuery.trim() === "") {
+function tagButton(keyword) {
+    //var searchQuery = String(encodeURI($("#searcher").val()));
+    if(keyword.trim() === "") {
         $.each(articleSort, function(index, value) {
            $("#"+value).fadeIn("slow"); 
         });
         return;
     }
+    var tag = keyword.replace("-tag", "");
     var fadeSpeedMs = 200;
     $.each(articleTags, function(key, value) {
-        if (value.indexOf(searchQuery) >= 0) {
+        if (value.indexOf(tag) >= 0) {
             $("#"+key).fadeIn(fadeSpeedMs);
         }
-        else if(value.indexOf(searchQuery) === -1) {
+        else if(value.indexOf(tag) === -1) {
             $("#"+key).fadeOut(fadeSpeedMs);
         }
     });
-});
+}
 
