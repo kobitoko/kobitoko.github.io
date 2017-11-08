@@ -1,3 +1,13 @@
+function init() {
+    // if no anchor # after page name, then open home tab.
+    openTab("home");
+    getArticles();
+    onhashchange=viewArticle;
+    if (window.location.hash !== "") {
+        viewArticle();
+    }
+}
+
 function openTab(pageName) {
     // TODO: add a # at the end of the url so one can copy paste the tab?
     //       or make it so tabs are different from content.?
@@ -17,12 +27,6 @@ function openTab(pageName) {
         }
         btn.style.color = colour;
     }
-}
-
-function init() {
-    // if no anchor # after page name, then open home tab.
-    openTab("home");
-    getArticles();
 }
 
 function getArticles() {
@@ -73,12 +77,6 @@ function downloadArticleBodies() {
     Promise.all(promises).then(createGrid);
 }
 
-function sortArticlesByLatestDate () {
-    articleSort.sort(function(a, b) {
-       return new Date(articleTags[a][0]) + new Date(articleTags[b][0]);
-    });
-}
-
 function createGrid() {
     sortArticlesByLatestDate();
     // Add a grid item with article's image and first 2 paragraphs. Markdown formatted.
@@ -88,7 +86,7 @@ function createGrid() {
         // Display the image and the first paragraph.(double newline)
         shortBlurb = articles[value].split('\n\n'),
         content = String(shortBlurb[1]+"<br>"+shortBlurb[2]);
-        $(".grid")[0].innerHTML += "<div id='"+value+"' class='grid-item'><img src='./articles/"+value+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
+        $(".grid")[0].innerHTML += "<div id='"+value+"' class='grid-item' onclick='clickedArticle(this.id)'><img src='./articles/"+value+".jpg'><article><h3>"+title+"</h3><br>"+ converter.makeHtml(content) +"</article>";
     });
     $.each(uniqueTags, function(index, value) {
         //Create buttons for tags.
@@ -97,8 +95,15 @@ function createGrid() {
     });
 }
 
+function sortArticlesByLatestDate() {
+    articleSort.sort(function(a, b) {
+       return new Date(articleTags[a][0]) + new Date(articleTags[b][0]);
+    });
+}
+
 function tagButton(keyword) {
     //var searchQuery = String(encodeURI($("#searcher").val()));
+    highlightTagButton(keyword);
     if(keyword.trim() === "") {
         $.each(articleSort, function(index, value) {
            $("#"+value).fadeIn("slow"); 
@@ -112,8 +117,51 @@ function tagButton(keyword) {
             $("#"+key).fadeIn(fadeSpeedMs);
         }
         else if(value.indexOf(tag) === -1) {
-            $("#"+key).fadeOut(fadeSpeedMs);
+            $("#"+key).fadeOut(fadeSpeedMs); 
         }
     });
 }
 
+function highlightTagButton(tag) {
+    var i = 0;
+    for (i; i < uniqueTags.length; i++) {
+        var bgcolour = "white",
+            colour = "black",
+            btn_id = String(uniqueTags[i]) + "-tag",
+            btn = document.getElementById(btn_id);
+        if (tag === btn_id) {
+            bgcolour = "black";
+            colour = "white";
+        }
+        btn.style.backgroundColor = bgcolour;
+        btn.style.color = colour;
+    }
+}
+
+function clickedArticle(article) {
+    window.location.hash = String(article);
+}
+
+function hideFullArticle() {
+    $("#home").show();
+    $("#full-article").hide();
+    window.location.hash='';
+}
+
+function viewArticle() {
+    var articleHash = window.location.hash.replace("#","");
+    // If the article title is empty or not found just go home.
+    if (articleHash === "" || Object.keys(articles).indexOf(articleHash) === -1 ) {
+        hideFullArticle();
+        return;
+    }
+    $("#home").hide();
+    $("#full-article").show();
+    var converter = new showdown.Converter();
+    var htmlFromMarkdown = "<div id="+articleHash+">"+converter.makeHtml(articles[articleHash])+"</div>";
+    $("#article-content").html(htmlFromMarkdown);
+    // jQUery scroll to element taken from Steve https://stackoverflow.com/a/6677069
+    $("html, body").animate({
+        scrollTop: $("#"+articleHash).offset().top
+    }, 200);
+}
