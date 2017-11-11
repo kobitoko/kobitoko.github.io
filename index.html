@@ -1,73 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <!-- CSS -->
-        <link rel="stylesheet" href="css/portfolio-base.css">
-    </head>
-    <body onLoad="init()">
-        <div id="header">
-            <div id="banner">
-                <h1>Ryan</h1> <h1 class="green">Satyabrata</h1>
-            </div>
-            <div id="navbar">
-                <ul id="navbarlist">
-                    <li>
-                        <button class="button-nav" id="home-btn" onclick="openTab('home')">HOME</button>
-                    </li>
-                    
-                    <li>
-                        <button class="button-nav" id="about-btn" onclick="openTab('about')">ABOUT</button>
-                    </li>
-                    <li>
-                        <button class="button-nav" id="contact-btn" onclick="openTab('contact')">CONTACT</button>
-                    </li>
-                    <li>
-                        <button class="button-nav" id="resources-btn" onclick="openTab('resources')">RESOURCES</button>
-                    </li>
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/portfolio-base.css">
+</head>
+
+<body onLoad="init()">
+    <div id="header">
+        <div id="banner">
+            <h1>Ryan</h1>
+            <h1 class="green">Satyabrata</h1>
+        </div>
+        <div id="navbar">
+            <ul id="navbarlist">
+                <li>
+                    <button class="button-nav" id="home-btn" onclick="openTab('home')">HOME</button>
+                </li>
+
+                <li>
+                    <button class="button-nav" id="about-btn" onclick="openTab('about')">ABOUT</button>
+                </li>
+                <li>
+                    <button class="button-nav" id="contact-btn" onclick="openTab('contact')">CONTACT</button>
+                </li>
+                <li>
+                    <button class="button-nav" id="resources-btn" onclick="openTab('resources')">RESOURCES</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div id="content">
+        <div id="full-article">
+            <button id="close-article" onclick="hideFullArticle('home')">X</button>
+            <div id="article-content"></div>
+        </div>
+        <div class="page" id="home">
+            <article id="short-description">
+                Curabitur <b class="green">important</b> in massa vitae imperdiet. Vestibulum interdum vulputate aliquet.<br> Quisque arcu lectus, lacinia vel libero in, <b class="green">important</b> cursus augue. Vivamus vehicula vitae <b class="green">dolor</b> non feugiat.<br> Donec sit amet varius lectus. Integer placerat ultricies nulla. Nam sed nunc eu tellus pretium porttitor.
+            </article>
+            <div id="spacer"></div>
+            <div class="tags-container">
+                <ul class="tags">
+                    <li><button class="button-tag" onclick="tagButton(' ')">All</button></li>
                 </ul>
             </div>
+
+            <div class="grid"></div>
+
         </div>
-        <div id="content">
-            <div id="full-article">
-                <button id="close-article" onclick="hideFullArticle()">X</button> 
-                <div id="article-content"></div>
-            </div>
-            <div class="page" id="home">
-                <article id="short-description">
-                    Curabitur <b class="green">important</b> in massa vitae imperdiet. Vestibulum interdum vulputate aliquet.<br>
-                    Quisque arcu lectus, lacinia vel libero in, <b class="green">important</b> cursus augue. Vivamus vehicula vitae <b class="green">dolor</b> non feugiat.<br>
-                    Donec sit amet varius lectus. Integer placerat ultricies nulla. Nam sed nunc eu tellus pretium porttitor. 
-                </article>
-                <div id="spacer"></div>
-                <div class="tags-container"><ul class="tags"><li><button class="button-tag" onclick="tagButton(' ')">All</button></li></ul></div>
-                
-                <div class="grid"></div>
-                
-            </div>
-            
-            <div class="page" id="about">
-                <h2>About World</h2>
-                <p>Something is here 2.</p>
-            </div>
-            
-            <div class="page" id="contact">
-                <h2>Contact World</h2>
-                <p>Something is here 3.</p>
-            </div>
-            
-            <div class="page" id="resources">
-                <h2>Resources World</h2>
-                <p>Something is here 4.</p>
-            </div>
+
+        <div class="page" id="about">
+            <h2>About World</h2>
+            <p>Something is here 2.</p>
         </div>
-        <div id="footer">
+
+        <div class="page" id="contact">
+            <h2>Contact World</h2>
+            <p>Something is here 3.</p>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src=" https://cdn.rawgit.com/showdownjs/showdown/1.7.6/dist/showdown.min.js"></script>
-        <script src="js/portfolio.js"></script>
-        
-    </body>
+
+        <div class="page" id="resources">
+            <h2>Resources World</h2>
+            <p>Something is here 4.</p>
+        </div>
+    </div>
+    <div id="footer">
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src=" https://cdn.rawgit.com/showdownjs/showdown/1.7.6/dist/showdown.min.js"></script>
+    <script src="js/portfolio.js"></script>
+
+</body>
+
 </html>

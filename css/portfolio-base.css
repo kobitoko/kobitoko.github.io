@@ -9,7 +9,7 @@ body {
     background-color: #222;
 }
 
-@media (min-width:375px) {    
+@media (min-width:375px) {
     #banner {
         padding-top: 1.5em;
         padding-left: 2em;
@@ -67,7 +67,7 @@ ul {
 }
 
 .page {
-    display:none;
+    display: none;
 }
 
 .green {
@@ -80,7 +80,8 @@ h1 {
     color: white;
 }
 
-h2, h3 {
+h2,
+h3 {
     display: inline;
 }
 
@@ -101,7 +102,8 @@ h2, h3 {
     text-align: center;
 }
 
-.grid, .tags-container {
+.grid,
+.tags-container {
     display: flex;
     flex-flow: row;
     flex-wrap: wrap;
@@ -122,9 +124,9 @@ h2, h3 {
     background-color: white;
     border-style: solid;
     border-color: lightgray;
-    border-width:thin;
+    border-width: thin;
     border-radius: 0.3em;
-    font-weight:bold;
+    font-weight: bold;
 }
 
 .button-tag:hover {
@@ -135,7 +137,7 @@ h2, h3 {
 .grid-item {
     width: 300px;
     margin: .5em;
-    box-shadow: 0 0 .2rem  lightgray;
+    box-shadow: 0 0 .2rem lightgray;
     border-radius: .2rem;
     overflow: hidden;
 }
@@ -164,14 +166,14 @@ img {
     border-style: solid;
     border-color: #ddd;
     position: absolute;
-    right:0.5em;
+    right: 0.5em;
 }
 
 #full-article {
     display: none;
-    position:absolute;
-    float:left;
-    width:auto;
+    position: absolute;
+    float: left;
+    width: auto;
     background-color: white;
 }
 
