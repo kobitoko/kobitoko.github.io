@@ -54,11 +54,13 @@ body {
         color: white;
         background-color: #222;
         border: none;
+        user-select: none;
     }
 }
 
 .button-nav:hover {
     background-color: #333;
+    user-select: none;
 }
 
 li {
@@ -131,11 +133,13 @@ h3 {
     border-width: thin;
     border-radius: 0.3em;
     font-weight: bold;
+    user-select: none;
 }
 
 .button-tag:hover {
     background-color: #222;
     color: white;
+    user-select: none;
 }
 
 .grid-item {
