@@ -1,14 +1,6 @@
 function init() {
-    // if no anchor # after page name, then open home tab.
-    //  Cannot load the articles anyways as they're not yet loaded duh!
-    //openTab("home");
     getArticles();
     onhashchange = viewArticle;
-    var page = window.location.hash.replace("#", "");
-    if (Object.keys(articles).indexOf(page) === -1) {
-        openTab(page);
-        viewArticle();
-    }
 }
 
 function openTab(pageName) {
@@ -79,6 +71,7 @@ function downloadArticleBodies() {
 }
 
 function createGrid() {
+    initialPage();
     sortArticlesByLatestDate();
     // Add a grid item with article's image and first 2 paragraphs. Markdown formatted.
     var converter = new showdown.Converter();
@@ -94,6 +87,19 @@ function createGrid() {
         $(".tags")[0].innerHTML += "<li><button class='button-tag' id='" + value + "-tag' onclick='tagButton(this.id)'>" + value + "</button></li>";
 
     });
+}
+
+// Check if anchor is a tab, or page, if so open it. Otherwise go to home.
+function initialPage() {
+    var tabs = ["home", "about", "contact", "resources"];
+    var page = window.location.hash.replace("#", "");
+    if (tabs.indexOf(page) !== -1) {
+        openTab(page);
+    } else if (Object.keys(articleTags).indexOf(page) !== -1) {
+        viewArticle();
+    } else {
+        openTab("home");
+    }
 }
 
 function sortArticlesByLatestDate() {

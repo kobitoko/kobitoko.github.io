@@ -9,6 +9,10 @@ body {
     background-color: #222;
 }
 
+#banner-link {
+    text-decoration: none;
+}
+
 @media (min-width:375px) {
     #banner {
         padding-top: 1.5em;
@@ -93,7 +97,7 @@ h3 {
 }
 
 #content {
-    width: 100vw;
+    width: auto;
     max-width: 1280px;
     margin: 0 auto;
 }
@@ -152,7 +156,7 @@ article {
 }
 
 img {
-    max-width: 400px;
+    max-width: 550px;
     width: 100%;
 }
 
@@ -171,10 +175,12 @@ img {
 
 #full-article {
     display: none;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
     position: absolute;
-    float: left;
-    width: auto;
     background-color: white;
+    justify-content: center;
 }
 
 #article-content {
@@ -182,5 +188,4 @@ img {
     margin-right: 5%;
     margin-top: 1rem;
     margin-bottom: 1rem;
-    justify-content: center;
 }
