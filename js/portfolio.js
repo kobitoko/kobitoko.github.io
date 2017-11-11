@@ -3,18 +3,14 @@ function init() {
     openTab("home");
     getArticles();
     onhashchange = viewArticle;
-    // Todo: make it so the tabs get re-colored back to home if it goes to home to view article.
-    // Because when pasting an #article in URL while on e.g. "about" page the "about" tab is still highlighted even when closing article and back to browsing home after closing.
-    if (Object.keys(articles).indexOf(window.location.hash.replace("#", "")) === -1) {
+    var page = window.location.hash.replace("#", "");
+    if (Object.keys(articles).indexOf(page) === -1) {
+        openTab(page);
         viewArticle();
     }
 }
 
 function openTab(pageName) {
-    // TODO: add a # at the end of the url so one can copy paste the tab?
-    //       or make it so tabs are different from content.?
-    //       or make it so every # is different from tabs and individual items.
-    //       so that a window is open when its e.g. a portfolio #
     var pages = document.getElementsByClassName("page"),
         i = 0;
     for (i; i < pages.length; i++) {
@@ -29,7 +25,8 @@ function openTab(pageName) {
         }
         btn.style.color = colour;
     }
-    hideFullArticle(pageName);
+    window.location.hash = pageName;
+    $("#full-article").hide();
 }
 
 function getArticles() {
@@ -148,6 +145,7 @@ function hideFullArticle(toOpen = "") {
     $("#" + toOpen).show();
     $("#full-article").hide();
     window.location.hash = toOpen;
+    openTab(toOpen);
 }
 
 function viewArticle() {
