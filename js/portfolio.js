@@ -1,6 +1,7 @@
 function init() {
     // if no anchor # after page name, then open home tab.
-    openTab("home");
+    //  Cannot load the articles anyways as they're not yet loaded duh!
+    //openTab("home");
     getArticles();
     onhashchange = viewArticle;
     var page = window.location.hash.replace("#", "");
