@@ -1,6 +1,14 @@
+
 function init() {
     getArticles();
     onhashchange = viewArticle;
+    converter.setOption('parseImgDimensions','true');
+    converter.setOption('simplifiedAutoLink','true');
+    converter.setOption('excludeTrailingPunctuationFromURLs','true');
+    converter.setOption('strikethrough','true');
+    converter.setOption('tables','true');
+    converter.setOption('simpleLineBreaks','true');
+    
 }
 
 function openTab(pageName) {
@@ -26,8 +34,10 @@ function getArticles() {
     $.getJSON("articles.json", {}, storeArticles);
 }
 
-// Title key and date+tags as an array of tags
-var articleTags = {},
+// Converter to convert to markdown.
+var converter = new showdown.Converter(),
+    // Title key and date+tags as an array of tags
+    articleTags = {},
     // The actual contents of articles, with title as key
     articles = {},
     // Array of articles to be sorted by their date tag
@@ -73,8 +83,8 @@ function downloadArticleBodies() {
 function createGrid() {
     initialPage();
     sortArticlesByLatestDate();
+    
     // Add a grid item with article's image and first 2 paragraphs. Markdown formatted.
-    var converter = new showdown.Converter();
     $.each(articleSort, function (index, value) {
         var title = String(value).replace("_", " "),
             // Display the image and the first paragraph.(double newline)
@@ -164,7 +174,6 @@ function viewArticle() {
     }
     $("#home").hide();
     $("#full-article").show();
-    var converter = new showdown.Converter();
     var htmlFromMarkdown = "<div id=" + articleHash + ">" + converter.makeHtml(articles[articleHash]) + "</div>";
     $("#article-content").html(htmlFromMarkdown);
     // jQUery scroll to element taken from Steve https://stackoverflow.com/a/6677069
