@@ -7,10 +7,13 @@ var converter = new showdown.Converter(),
     articleTags = {},
     // The actual contents of articles, with title as key
     articles = {},
-    // Array of articles to be sorted by their date tag
-    articleSort = [],
+    // Article list of all articles.
+    articleList = [],
     // Array of unique tags shared by all articles
-    uniqueTags = [];
+    uniqueTags = [],
+    // Array of articles to be sorted by their date tag
+    articleFiltered = [],
+    activeTag = "";
 
 function init() {
     getArticles();
@@ -33,7 +36,6 @@ function init() {
 }
 
 function openTab(pageName) {
-    console.log("openTab "+pageName);
     var pages = document.getElementsByClassName("page"),
         i = 0;
     for (i; i < pages.length; i++) {
@@ -60,7 +62,8 @@ function storeArticles(data) {
     // Store article title and it's tags
     $.each(data, function (key, val) {
         articleTags[key] = val;
-        articleSort.push(key);
+        articleList.push(key);
+        articleFiltered.push(key);
         // Store unique tags
         $.each(val, function (index, tag) {
             if (uniqueTags.indexOf(tag) === -1 && index > 0) {
@@ -94,15 +97,17 @@ function downloadArticleBodies() {
 function createGrid() {
     initialPage();
     sortArticlesByLatestDate();
-
+    $(".tags")[0].innerHTML = "";
+    $(".grid")[0].innerHTML = "";
     // Add a grid item with article's image and first 2 paragraphs. Markdown formatted.
-    $.each(articleSort, function (index, value) {
+    $.each( articleFiltered, function (index, value) {
         var title = String(value).replace("_", " "),
             // Display the image and the first paragraph.(double newline)
             shortBlurb = articles[value].split('\n\n'),
             content = String(shortBlurb[1] + "<br>" + shortBlurb[2]);
         $(".grid")[0].innerHTML += "<div id='" + value + "' class='grid-item' onclick='clickedArticle(this.id)'><img src='./articles/" + value + ".jpg'><article><h3>" + title + "</h3><br>" + converter.makeHtml(content) + "</article>";
     });
+    $(".tags")[0].innerHTML += "<li><button class='button-tag' id='all-tag' onclick='tagButton(this.id)'>All</button></li>";
     $.each(uniqueTags, function (index, value) {
         //Create buttons for tags.
         $(".tags")[0].innerHTML += "<li><button class='button-tag' id='" + value + "-tag' onclick='tagButton(this.id)'>" + value + "</button></li>";
@@ -123,29 +128,32 @@ function initialPage() {
 }
 
 function sortArticlesByLatestDate() {
-    articleSort.sort(function (a, b) {
+    articleList.sort(function (a, b) {
         return new Date(articleTags[a][0]) + new Date(articleTags[b][0]);
     });
 }
 
 function tagButton(keyword) {
-    highlightTagButton(keyword);
-    var fadeSpeedMs = 200;
-    if (keyword.trim() === "") {
-        $.each(articleSort, function (index, value) {
-            $("#" + value).fadeIn(fadeSpeedMs);
-        });
-        return;
-    }
-    console.log(" aaa " + keyword);
+    articleFiltered = [];
     var tag = keyword.replace("-tag", "");
-    $.each(articleTags, function (key, value) {
-        if (value.indexOf(tag) >= 0) {
-            $("#" + key).fadeIn(fadeSpeedMs);
-        } else if (value.indexOf(tag) === -1) {
-            $("#" + key).fadeOut(fadeSpeedMs);
-        }
-    });
+    highlightTagButton(tag);
+    if (String(tag) === "all") {
+        /*$.each(articleList, function (index, value) {
+            $("#" + value).show();
+        });*/
+        articleFiltered = articleList;
+    } else {
+        $.each(articleTags, function (key, value) {
+            if (value.indexOf(tag) >= 0) {
+                //$("#" + key).show();
+                articleFiltered.push(key);
+            }/* else if (value.indexOf(tag) === -1) {
+                $("#" + key).hide();
+            }*/
+        });
+    }
+    activeTag = tag;
+    createGrid();
 }
 
 function highlightTagButton(tag) {
@@ -159,8 +167,10 @@ function highlightTagButton(tag) {
             bgcolour = "black";
             colour = "white";
         }
-        btn.style.backgroundColor = bgcolour;
-        btn.style.color = colour;
+        //if (btn !== null) {
+            btn.style.backgroundColor = bgcolour;
+            btn.style.color = colour;
+        //}
     }
 }
 
@@ -169,17 +179,16 @@ function clickedArticle(article) {
 }
 
 function hideFullArticle(toOpen) {
-    console.log("hide and to show "+toOpen);
-    //$("#" + toOpen).show();
     $("#full-article").hide();
     window.location.hash = toOpen;
     openTab(toOpen);
+    createGrid();
 }
 
 function viewArticle() {
     var articleHash = window.location.hash.replace("#", "");
     // If the article title is empty or not found just go home.
-    if (articleHash === "" || articleSort.indexOf(articleHash) === -1) {
+    if (articleHash === "" || articleList.indexOf(articleHash) === -1) {
         hideFullArticle(articleHash);
         return;
     }
