@@ -1,4 +1,3 @@
-// Todo: When opening article, and close it, then sort tags, the opened article's item in the grid still shows up and does not hide for some reason.
 // Converter to convert to markdown.
 var converter = new showdown.Converter(),
     // The pages of the website
@@ -59,6 +58,8 @@ function getArticles() {
 }
 
 function storeArticles(data) {
+    // Tag for all articles
+    uniqueTags.push("All");
     // Store article title and it's tags
     $.each(data, function (key, val) {
         articleTags[key] = val;
@@ -107,12 +108,12 @@ function createGrid() {
             content = String(shortBlurb[1] + "<br>" + shortBlurb[2]);
         $(".grid")[0].innerHTML += "<div id='" + value + "' class='grid-item' onclick='clickedArticle(this.id)'><img src='./articles/" + value + ".jpg'><article><h3>" + title + "</h3><br>" + converter.makeHtml(content) + "</article>";
     });
-    $(".tags")[0].innerHTML += "<li><button class='button-tag' id='all-tag' onclick='tagButton(this.id)'>All</button></li>";
     $.each(uniqueTags, function (index, value) {
         //Create buttons for tags.
         $(".tags")[0].innerHTML += "<li><button class='button-tag' id='" + value + "-tag' onclick='tagButton(this.id)'>" + value + "</button></li>";
 
     });
+    highlightTagButton(activeTag);
 }
 
 // Check if anchor is a tab, or page, if so open it. Otherwise go to home.
@@ -136,22 +137,16 @@ function sortArticlesByLatestDate() {
 function tagButton(keyword) {
     articleFiltered = [];
     var tag = keyword.replace("-tag", "");
-    highlightTagButton(tag);
-    if (String(tag) === "all") {
-        /*$.each(articleList, function (index, value) {
-            $("#" + value).show();
-        });*/
+    if (tag.toLowerCase() === "all") {
         articleFiltered = articleList;
     } else {
         $.each(articleTags, function (key, value) {
             if (value.indexOf(tag) >= 0) {
-                //$("#" + key).show();
                 articleFiltered.push(key);
-            }/* else if (value.indexOf(tag) === -1) {
-                $("#" + key).hide();
-            }*/
+            }
         });
     }
+    console.log(" sss "+tag);
     activeTag = tag;
     createGrid();
 }
@@ -161,16 +156,14 @@ function highlightTagButton(tag) {
     for (i; i < uniqueTags.length; i++) {
         var bgcolour = "white",
             colour = "black",
-            btn_id = String(uniqueTags[i]) + "-tag",
-            btn = document.getElementById(btn_id);
+            btn_id = String(uniqueTags[i]),
+            btn = document.getElementById(btn_id+"-tag");
         if (tag === btn_id) {
             bgcolour = "black";
             colour = "white";
         }
-        //if (btn !== null) {
-            btn.style.backgroundColor = bgcolour;
-            btn.style.color = colour;
-        //}
+        btn.style.backgroundColor = bgcolour;
+        btn.style.color = colour;
     }
 }
 
