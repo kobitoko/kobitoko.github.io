@@ -125,7 +125,6 @@ function sortArticlesByLatestDate() {
 }
 
 function tagButton(keyword) {
-    //var searchQuery = String(encodeURI($("#searcher").val()));
     highlightTagButton(keyword);
     if (keyword.trim() === "") {
         $.each(articleSort, function (index, value) {
