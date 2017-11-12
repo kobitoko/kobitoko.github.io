@@ -1,5 +1,7 @@
 // Converter to convert to markdown.
 var converter = new showdown.Converter(),
+    // The pages of the website
+    tabs = ["home", "about", "contact", "resources"],
     // Title key and date+tags as an array of tags
     articleTags = {},
     // The actual contents of articles, with title as key
@@ -13,9 +15,11 @@ function init() {
     getArticles();
     // when the # changes in the url call viewArticle
     onhashchange = viewArticle;
-    // Use escape button to hide full article too.
+    // Use escape button to hide full article too, but don't hide pages!
+    console.log(tabs.indexOf(window.location.hash));
     window.onkeydown = function (e) {
-        if (e.keyCode === 27) {
+        var page = window.location.hash.replace("#", "");
+        if (e.keyCode === 27 && tabs.indexOf(page) === -1) {
             hideFullArticle("home");
         }
     }
@@ -107,7 +111,6 @@ function createGrid() {
 
 // Check if anchor is a tab, or page, if so open it. Otherwise go to home.
 function initialPage() {
-    var tabs = ["home", "about", "contact", "resources"];
     var page = window.location.hash.replace("#", "");
     if (tabs.indexOf(page) !== -1) {
         openTab(page);
