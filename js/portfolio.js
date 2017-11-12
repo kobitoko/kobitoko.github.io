@@ -1,3 +1,4 @@
+// Todo: When opening article, and close it, then sort tags, the opened article's item in the grid still shows up and does not hide for some reason.
 // Converter to convert to markdown.
 var converter = new showdown.Converter(),
     // The pages of the website
@@ -16,7 +17,6 @@ function init() {
     // when the # changes in the url call viewArticle
     onhashchange = viewArticle;
     // Use escape button to hide full article too, but don't hide pages!
-    console.log(tabs.indexOf(window.location.hash));
     window.onkeydown = function (e) {
         var page = window.location.hash.replace("#", "");
         if (e.keyCode === 27 && tabs.indexOf(page) === -1) {
@@ -33,6 +33,7 @@ function init() {
 }
 
 function openTab(pageName) {
+    console.log("openTab "+pageName);
     var pages = document.getElementsByClassName("page"),
         i = 0;
     for (i; i < pages.length; i++) {
@@ -129,14 +130,15 @@ function sortArticlesByLatestDate() {
 
 function tagButton(keyword) {
     highlightTagButton(keyword);
+    var fadeSpeedMs = 200;
     if (keyword.trim() === "") {
         $.each(articleSort, function (index, value) {
-            $("#" + value).fadeIn("slow");
+            $("#" + value).fadeIn(fadeSpeedMs);
         });
         return;
     }
+    console.log(" aaa " + keyword);
     var tag = keyword.replace("-tag", "");
-    var fadeSpeedMs = 200;
     $.each(articleTags, function (key, value) {
         if (value.indexOf(tag) >= 0) {
             $("#" + key).fadeIn(fadeSpeedMs);
@@ -167,7 +169,8 @@ function clickedArticle(article) {
 }
 
 function hideFullArticle(toOpen) {
-    $("#" + toOpen).show();
+    console.log("hide and to show "+toOpen);
+    //$("#" + toOpen).show();
     $("#full-article").hide();
     window.location.hash = toOpen;
     openTab(toOpen);
@@ -176,7 +179,7 @@ function hideFullArticle(toOpen) {
 function viewArticle() {
     var articleHash = window.location.hash.replace("#", "");
     // If the article title is empty or not found just go home.
-    if (articleHash === "" || Object.keys(articles).indexOf(articleHash) === -1) {
+    if (articleHash === "" || articleSort.indexOf(articleHash) === -1) {
         hideFullArticle(articleHash);
         return;
     }
