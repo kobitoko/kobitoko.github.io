@@ -1,14 +1,31 @@
+// Converter to convert to markdown.
+var converter = new showdown.Converter(),
+    // Title key and date+tags as an array of tags
+    articleTags = {},
+    // The actual contents of articles, with title as key
+    articles = {},
+    // Array of articles to be sorted by their date tag
+    articleSort = [],
+    // Array of unique tags shared by all articles
+    uniqueTags = [];
 
 function init() {
     getArticles();
+    // when the # changes in the url call viewArticle
     onhashchange = viewArticle;
-    converter.setOption('parseImgDimensions','true');
-    converter.setOption('simplifiedAutoLink','true');
-    converter.setOption('excludeTrailingPunctuationFromURLs','true');
-    converter.setOption('strikethrough','true');
-    converter.setOption('tables','true');
-    converter.setOption('simpleLineBreaks','true');
-    
+    // Use escape button to hide full article too.
+    window.onkeydown = function (e) {
+        if (e.keyCode === 27) {
+            hideFullArticle("home");
+        }
+    }
+    // Set showdown.js options for markdown
+    converter.setOption('parseImgDimensions', 'true');
+    converter.setOption('simplifiedAutoLink', 'true');
+    converter.setOption('excludeTrailingPunctuationFromURLs', 'true');
+    converter.setOption('strikethrough', 'true');
+    converter.setOption('tables', 'true');
+    converter.setOption('simpleLineBreaks', 'true');
 }
 
 function openTab(pageName) {
@@ -33,17 +50,6 @@ function openTab(pageName) {
 function getArticles() {
     $.getJSON("articles.json", {}, storeArticles);
 }
-
-// Converter to convert to markdown.
-var converter = new showdown.Converter(),
-    // Title key and date+tags as an array of tags
-    articleTags = {},
-    // The actual contents of articles, with title as key
-    articles = {},
-    // Array of articles to be sorted by their date tag
-    articleSort = [],
-    // Array of unique tags shared by all articles
-    uniqueTags = [];
 
 function storeArticles(data) {
     // Store article title and it's tags
@@ -83,7 +89,7 @@ function downloadArticleBodies() {
 function createGrid() {
     initialPage();
     sortArticlesByLatestDate();
-    
+
     // Add a grid item with article's image and first 2 paragraphs. Markdown formatted.
     $.each(articleSort, function (index, value) {
         var title = String(value).replace("_", " "),
@@ -158,7 +164,7 @@ function clickedArticle(article) {
     window.location.hash = String(article);
 }
 
-function hideFullArticle(toOpen = "") {
+function hideFullArticle(toOpen) {
     $("#" + toOpen).show();
     $("#full-article").hide();
     window.location.hash = toOpen;
@@ -174,7 +180,9 @@ function viewArticle() {
     }
     $("#home").hide();
     $("#full-article").show();
-    var htmlFromMarkdown = "<div id=" + articleHash + ">" + converter.makeHtml(articles[articleHash]) + "</div>";
+    var htmlFromMarkdown = "<div id=" + articleHash + ">" +
+        "<h2>" + articleHash.replace("_", " ") + "</h2>" +
+        converter.makeHtml(articles[articleHash]) + "</div>";
     $("#article-content").html(htmlFromMarkdown);
     // jQUery scroll to element taken from Steve https://stackoverflow.com/a/6677069
     $("html, body").animate({
